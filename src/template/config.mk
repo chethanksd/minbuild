@@ -8,7 +8,7 @@
 #
 # Project specific include path
 #
-PROJECT_IPATH += 
+PROJECT_IPATH +=  $(PRJ_PATH)/$(PROJECT)
 
 #
 # Project specific compiler options

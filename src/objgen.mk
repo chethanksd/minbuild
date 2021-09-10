@@ -105,6 +105,10 @@ TEMP := $(patsubst %.c,%_c.o,$(TEMP))
 TEMP := $(patsubst %.S,%_S.o,$(TEMP))
 OBJECT_FILES := $(foreach FILE, $(TEMP), $(BUILD_PATH)/$(PROJECT)/$(notdir $(FILE)))
 
+#
+# include dependency files
+#
+-include $(OBJECT_FILES:.o=.d)
 
 
 #
@@ -119,14 +123,33 @@ all: $(OBJECT_FILES)
 	@size $(PROJ_EXEC).out
 	@echo "================================================="
 
+
 $(PROJ_BUILD)/%_cpp.o: %.cpp
 	@echo "Compiling [C++] file $< to $@"
-	@g++ $(CFLAGS) $< -o $@
+	@g++ $(CFLAGS) -MM $< -o $(@:.o=.d)
+	@g++ $(CFLAGS) -c  $< -o $@
+	@mv -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's|.*:|$@:|' < $(@:.o=.d.tmp) > $(@:.o=.d)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
 
 $(PROJ_BUILD)/%_c.o : %.c
 	@echo "Compiling [C  ] file $< to $@"
+	@gcc $(CFLAGS) -MM $< -o $(@:.o=.d)
 	@gcc $(CFLAGS) $< -o $@
+	@mv -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's|.*:|$@:|' < $(@:.o=.d.tmp) > $(@:.o=.d)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
 
 $(PROJ_BUILD)/%_S.o : %.S
 	@echo "Compiling [Asm] file $< to $@"
+	@gcc $(CFLAGS) -MM $< -o $(@:.o=.d)
 	@gcc $(CFLAGS) $< -o $@
+	@mv -f $(@:.o=.d) $(@:.o=.d.tmp)
+	@sed -e 's|.*:|$@:|' < $(@:.o=.d.tmp) > $(@:.o=.d)
+	@sed -e 's/.*://' -e 's/\\$$//' < $(@:.o=.d.tmp) | fmt -1 | \
+	  sed -e 's/^ *//' -e 's/$$/:/' >> $(@:.o=.d)
+	@rm -f $(@:.o=.d.tmp)
