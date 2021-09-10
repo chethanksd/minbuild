@@ -43,25 +43,29 @@ Opitonal configuration to specify default argument to pass when you run the fina
 ## How to create new project
 
 Type following command to create new project in PRJ_BUILD path
-
+```
 make PROJ=<new_project> new
+```
 
 ## How to trigger build
-
+Type following command to trigger clean or incremental build
+```
 make PROJ=<project>
-
+```
 Note: PROJ Argument is optional here, when not specified DEFAULT_PROJECT will taken
 
+
 ## How to clean build
-
+```
 make PROJ=<project> clean
-
+```
 Note: PROJ Argument is optional here, when not specified entire BUILD_OUTPUT directory will be cleaned
 
+
 ## How to run final executable
-
+```
 make PROJ=<project> ARGS<arugments> run
-
+```
 Note: 
 1) PROJ Argument is optional here, when not specified DEFAULT_PROJECT will taken
 2) ARGS is also optional
