@@ -91,6 +91,25 @@ check_project: ressolve_project
 	@mkdir -p $(BUILD_PATH)/$(PROJECT)
 
 #
+# ressolve target clean path
+#
+ressolve_clean_path:
+ifdef PROJ
+	$(eval TEMP = $(patsubst %/,%,$(PROJ)))
+	$(eval PROJECT=$(TEMP))
+	@echo "### Switching to requested project: $(PROJECT)"
+ifeq ($(wildcard $(PRJ_PATH)/$(PROJ)/.),)
+	$(error "### ERROR! Did not find project: $(PROJECT)")
+endif
+	@echo "### Found project : $(PROJECT)"
+	$(eval CLEAN_PATH=$(BUILD_PATH)/$(PROJECT))
+endif
+ifndef PROJ
+	@echo "### Cleaning entire build path"
+	$(eval CLEAN_PATH=$(BUILD_PATH))
+endif
+
+#
 # ressolve project path
 #
 # user can pass project name by assigning PROJ when calling make
@@ -123,11 +142,11 @@ endif
 #
 .PHONY: clean
 
-clean:
+clean: ressolve_clean_path
 	@echo
-	rm -rf $(BUILD_PATH)/*
+	rm -rf $(CLEAN_PATH)/*
 	@echo "=== content of build ==="
-	ls -l $(BUILD_PATH)
+	ls -l $(CLEAN_PATH)
 	@echo
 
 
