@@ -23,7 +23,7 @@ ifndef PRJ_PATH
 endif
 
 #
-# get objgen.mk path
+# get objgen.mk self path
 #
 TEMP := $(abspath $(lastword $(MAKEFILE_LIST)))
 SCRIPT_PATH := $(notdir $(patsubst %/,%,$(dir $(TEMP))))
@@ -31,7 +31,6 @@ SCRIPT_PATH := $(notdir $(patsubst %/,%,$(dir $(TEMP))))
 #
 # Import external scripts
 #
-include $(SCRIPT_PATH)/extralib.mk
 include $(SCRIPT_PATH)/common.mk
 include $(PRJ_PATH)/$(PROJECT)/config.mk
 
@@ -54,6 +53,7 @@ PROJ_EXEC  = $(PROJ_BUILD)/$(PROJECT)
 #
 CFLAGS  = $(COMMON_CFLAG)
 CFLAGS += $(COMMON_IPATH:%=-I%)
+CFLAGS += $(COMMON_DEF:%=-D%)
 CFLAGS += $(PROJECT_CFLAG)
 CFLAGS += $(PROJECT_IPATH:%=-I%)
 CFLAGS += $(PROJECT_DEF:%=-D%)

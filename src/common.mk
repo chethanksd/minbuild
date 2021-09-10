@@ -4,17 +4,16 @@
 # author: chetandev.ksd@gmail.com
 #
 
-#
-# Common makefile definitons
-#
-LIB_DIR = $(ROOT)/lib
-
 
 #
 # Include serach paths
 #
-COMMON_IPATH  = $(LIB_DIR)
-COMMON_IPATH += /usr/local/include/opencv4/
+COMMON_IPATH  += 
+
+#
+# Common defines
+#
+COMMON_DEF  +=
 
 
 #
@@ -30,5 +29,4 @@ COMMON_CFLAG += -Os
 #
 # Linker options
 #
-COMMON_LFLAG  = -L/usr/local/lib
 COMMON_LFLAG += -Wl,--gc-sections
