@@ -1,5 +1,5 @@
 #
-# Common definitions
+# Common workspace definitions
 #
 # author: chetandev.ksd@gmail.com
 #
@@ -15,18 +15,22 @@ COMMON_IPATH  +=
 #
 COMMON_DEF  +=
 
+#
+# Common soruces to compile
+#
+COMMON_SRC  += 
 
 #
-# Compile options
+# Common dependency files
 #
-COMMON_CFLAG  = -ffunction-sections
-COMMON_CLFAG += -fdata-sections 
-COMMON_CFLAG += -Wall
-COMMON_CFLAG += -g -ggdb -gdwarf-3 -gstrict-dwarf
-COMMON_CFLAG += -c
-COMMON_CFLAG += -Os
+COMMON_DEP  += 
 
 #
-# Linker options
+# Common pregen targets
 #
-COMMON_LFLAG += -Wl,--gc-sections
+COMMON_PREGEN +=
+
+#
+# Common postgen targets
+#
+COMMON_POSTGEN +=

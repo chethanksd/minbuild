@@ -28,7 +28,7 @@ PROJECT_DEF +=
 #
 # Sources to compile
 #
-PROJECT_SRC  += 
+PROJECT_SRC  += $(PRJ_PATH)/$(PROJECT)/$(PROJECT).cpp
 
 #
 # Project dependency files

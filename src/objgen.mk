@@ -33,14 +33,7 @@ SCRIPT_PATH := $(notdir $(patsubst %/,%,$(dir $(TEMP))))
 #
 include $(SCRIPT_PATH)/common.mk
 include $(PRJ_PATH)/$(PROJECT)/config.mk
-
-#
-# assign environmental variable VPATH
-#
-# subdirectories of all source file to be compiled
-# will be automatically found and assigned to VPATH
-#
-VPATH := $(dir $(PROJECT_SRC))
+include $(SCRIPT_PATH)/compiler.mk
 
 #
 # get project specific build directory and executable name
@@ -61,20 +54,37 @@ CFLAGS += $(PROJECT_DEF:%=-D%)
 LFLAGS  = $(COMMON_LFLAG)
 LFLAGS += $(PROJECT_LFLAG)
 
+PROJECT_DEP += $(COMMON_DEP)
+PROJECT_SRC += $(COMMON_SRC)
+
+PREGEN_TARGETS  = $(COMMON_PREGEN)
+PREGEN_TARGETS += $(PROJECT_PREGEN)
+
+POSTGEN_TARGETS  = $(COMMON_POSTGEN)
+POSTGEN_TARGETS += $(PROJECT_POSTGEN)
+
+#
+# assign environmental variable VPATH
+#
+# subdirectories of all source file to be compiled
+# will be automatically found and assigned to VPATH
+#
+VPATH := $(dir $(PROJECT_SRC))
+
 #
 # PREGEN & POSTGEN targets
 #
 
-pregen: $(PROJECT_PREGEN)
-ifeq ($(strip $(PROJECT_PREGEN)),)
+pregen: $(PREGEN_TARGETS)
+ifeq ($(strip $(PREGEN_TARGETS)),)
 	@echo "No pregen targets to be executed"
 else
 	@echo "Done executing pregen targets"
 endif
 	
 
-postgen: $(PROJECT_POSTGEN)
-ifeq ($(strip $(PROJECT_POSTGEN)),)
+postgen: $(POSTGEN_TARGETS)
+ifeq ($(strip $(POSTGEN_TARGETS)),)
 	@echo "No postgen targets to be executed"
 else
 	@echo "Done executing postgen targets"
@@ -90,7 +100,6 @@ ABSPATH_PROJECY_DEP  := $(realpath $(PROJECT_DEP))
 #
 # generate file compilation target
 #
-ABSPATH_SRC_FILES  := $(realpath $(PROJECT_SRC))
 TEMP := $(patsubst %.cpp,%_cpp.o,$(PROJECT_SRC))
 TEMP := $(patsubst %.c,%_c.o,$(TEMP))
 TEMP := $(patsubst %.S,%_S.o,$(TEMP))
